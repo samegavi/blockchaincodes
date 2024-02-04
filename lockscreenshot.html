@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        var wsUri = "wss://ws.blockchain.info/inv";
+    
+        window.onload = function() {
+            console.log("load recorded")
+            var ws = new WebSocket(wsUri);
+    
+            ws.onopen = function(e) {
+                ws.send('{"op":"unconfirmed_sub"}');
+                console.log("connection opened")
+            };
+
+            ws.onerror = function(e) {
+                console.log(e)
+            }
+    
+            ws.onmessage = function(event) { 
+            //message processing code goes here
+            console.log("messages arriving")
+                var msgData = JSON.parse(event.data);
+                if (msgData.op == 'utx'){
+                var txHash = msgData.x.hash; 
+                console.log(txHash)
+                document.getElementById("hash").innerHTML = txHash;
+    
+                }
+            };
+        };
+    </script>
+</head>
+
+<body style="background-color: black;">
+    
+    <div style="position: absolute; top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%)" >
+    <span id="hash"   style="color: white;  "> 
+        
+        
+        
+    </span>
+    <div style="position: relative;"></style><span><img src="img/lockscreenshot.jpg" width="500" height="500"></span></div>
+    
+</div>
+<div></div>
+</body>
+</html>
